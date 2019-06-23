@@ -1,3 +1,6 @@
 {
-    "python.pythonPath": "/Users/henningofstad/.local/share/virtualenvs/py-iot-server-UZ1HN7Me/bin/python"
+    "python.pythonPath": "C:\\Users\\House\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
+    "python.linting.pylintEnabled": false,
+    "python.linting.enabled": true,
+    "python.linting.pep8Enabled": true
 }

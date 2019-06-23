@@ -1,1 +1,6 @@
 gcp-credentials.json
+.vscode
+
+*.pem
+
+*configuration.json
