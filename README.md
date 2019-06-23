@@ -3,6 +3,7 @@
 ## Setup
 
 ### Required files
+
 `publisher/credentials.json`
 ```json
 {
@@ -20,6 +21,20 @@
   "message_type": ""
 }
 ```
+
+`publisher/roots.pem`
+
+`publisher/rsa_private.pem`
+
+Get `roots.pem` by running: 
+```bash
+wget https://pki.goog/roots.pem
+```
+ or 
+```bash
+curl https://pki.goog/roots.pem > roots.pem
+```
+
 `subscriber/credentials.json`
 ```json
 {
