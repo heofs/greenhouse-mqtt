@@ -3,6 +3,7 @@ version: '3'
 services:
   subscriber:
     build: './subscriber'
+    image: server_subscriber:v1
   timescaledb:
     build: './timescale'
   grafana:
