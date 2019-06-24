@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  subscriber:
+    build: './subscriber'
+  timescaledb:
+    build: './timescale'
+  grafana:
+    build: './grafana'
