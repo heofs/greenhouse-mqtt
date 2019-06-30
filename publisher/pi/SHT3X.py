@@ -10,7 +10,7 @@ class SHT3X(object):
     def get_reading(self):
         # SHT31 address, 0x44(68)
         # Send measurement command, 0x2C(44)
-        #		0x06(06)	High repeatability measurement
+        # 0x06(06) High repeatability measurement
         self.bus.write_i2c_block_data(0x44, 0x2C, [0x06])
 
         time.sleep(0.5)
@@ -27,7 +27,7 @@ class SHT3X(object):
 
         print("Temperature in Celsius is : %.2f C" % self.cTemp)
         print("Relative Humidity is : %.2f %%RH" % self.humidity)
-        return (self.cTemp, self.humidity)
+        return {"temperature": self.cTemp, "humidity": self.humidity}
 
 
 if __name__ == '__main__':
