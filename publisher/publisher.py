@@ -46,26 +46,25 @@ import json
 import os
 import ssl
 import time
-
-import jwt
+from dotenv import load_dotenv
 import paho.mqtt.client as mqtt
+import jwt
 
-with open('configuration.json') as json_file:
-    config = json.load(json_file)
+load_dotenv()
 
-registry_id = config['registry_id']
-cloud_region = config['cloud_region']
-project_id = config['project_id']
-device_id = config['device_id']
-algorithm = config['algorithm']
-private_key_file = config['private_key_file']
-ca_certs = config['ca_certs']
+registry_id = os.getenv('REGISTRY_ID')
+cloud_region = os.getenv('CLOUD_REGION')
+project_id = os.getenv('PROJECT_ID')
+device_id = os.getenv('DEVICE_ID')
+algorithm = os.getenv('ALGORITHM')
+private_key_file = os.getenv('PRIVATE_KEY_FILE')
+ca_certs = os.getenv('CA_CERTS')
 
-mqtt_bridge_hostname = config['mqtt_bridge_hostname']
-mqtt_bridge_port = config['mqtt_bridge_port']
-num_messages = config['num_messages']
-jwt_expires_minutes = config['jwt_expires_minutes']
-message_type = config['message_type']
+mqtt_bridge_hostname = os.getenv('MQTT_BRIDGE_HOSTNAME')
+mqtt_bridge_port = int(os.getenv('MQTT_BRIDGE_PORT'))
+num_messages = int(os.getenv('NUM_MESSAGES'))
+jwt_expires_minutes = int(os.getenv('JWT_EXPIRES_MINUTES'))
+message_type = os.getenv('MESSAGE_TYPE')
 
 
 def create_jwt(project_id, private_key_file, algorithm):
