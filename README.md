@@ -47,3 +47,13 @@ curl https://pki.goog/roots.pem > roots.pem
   "service_account_json": "./gcp-credentials.json"
 }
 ```
+
+
+## Raspberry Pi
+
+To run script on startup.
+* `sudo cp publisher/pi/publisher.service /etc/systemd/system/publisher.service`
+
+* `sudo systemctl start publisher.service`
+
+* `sudo systemctl enable publisher.service`
