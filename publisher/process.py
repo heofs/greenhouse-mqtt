@@ -14,7 +14,7 @@ class SHT3X():
 sensor = SHT3X()
 
 
-def get_serial():
+def get_device_serial():
     # Extract serial from cpuinfo file
     cpuserial = "0000000000000000"
     try:
@@ -25,18 +25,31 @@ def get_serial():
         f.close()
         return cpuserial
     except:
-        raise Exception('Could not find serial number')
+        raise Exception('Exception: Could not find serial number')
 
+
+# try:
+#     device_serial = get_device_serial()
+#     print("Found serial: " + device_serial)
+# except Exception as e:
+#     raise SystemExit(e)
+
+device_serial = "22319481358"
 
 while True:
+    # TODO: Get sensor data
+    data = sensor.get_reading()
+    res = {
+        'deviceId': device_serial,
+
+    }
+
+    # TODO: Publish sensor data to sub with timestamp and device_serial
+
+    # TODO: Wait for X seconds.
+    time.sleep(10)
+
     print(os.getenv('TEST_ENV'))
     # Returns dict {"temperature": 20, "humidity": 55}
-    data = sensor.get_reading()
-    try:
-        serialNumber = getserial()
-        print(serialNumber)
-    except Exception as e:
-        print(e)
     print(data)
     # data['deviceid']
-    time.sleep(3)
