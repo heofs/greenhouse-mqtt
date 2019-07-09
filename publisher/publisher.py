@@ -160,8 +160,7 @@ class Device(object):
                 print('Fan turned off.')
 
 
-def main():
-
+if __name__ == '__main__':
     # Create the MQTT client and connect to Cloud IoT.
     client = mqtt.Client(
         client_id='projects/{}/locations/{}/registries/{}/devices/{}'.format(
@@ -220,7 +219,3 @@ def main():
     client.disconnect()
     client.loop_stop()
     print('Finished loop successfully. Goodbye!')
-
-
-if __name__ == '__main__':
-    main()
