@@ -17,7 +17,8 @@ class SHT3X(object):
 
         # SHT31 address, 0x44(68)
         # Read data back from 0x00(00), 6 bytes
-        # Temp MSB, Temp LSB, Temp CRC, Humididty MSB, Humidity LSB, Humidity CRC
+        # Temp MSB, Temp LSB, Temp CRC, Humididty MSB,
+        # Humidity LSB, Humidity CRC
         self.data = self.bus.read_i2c_block_data(0x44, 0x00, 6)
 
         # Convert the data
