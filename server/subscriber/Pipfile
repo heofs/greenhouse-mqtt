@@ -6,17 +6,7 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-paho-mqtt = "*"
-autopep8 = "*"
-pylint = "*"
-ssl = "*"
-random = "*"
-jwt-maker = "*"
-cryptography = "*"
-google-cloud-pubsub = "*"
-google-api-python-client = "*"
-pyjwt = "*"
-oauth2client = "*"
+psycopg2-binary = "*"
 
 [requires]
 python_version = "3.7"
