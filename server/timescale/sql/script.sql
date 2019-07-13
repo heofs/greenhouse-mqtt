@@ -1,0 +1,21 @@
+CREATE ROLE henning WITH PASSWORD 'password' CREATEDB CREATEROLE LOGIN INHERIT;
+CREATE DATABASE testdb;
+GRANT ALL PRIVILEGES ON DATABASE testdb TO henning;
+
+\c testdb
+
+
+CREATE TABLE public.sensor_data(
+    id SERIAL PRIMARY KEY,
+    device_id TEXT,
+    temperature FLOAT(1),
+    humidity FLOAT(1),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+-- GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.sensor_data TO henning;
+
+-- GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO henning;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public to henning;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public to henning;
+GRANT ALL PRIVILEGES ON ALL FUNCTIONS IN SCHEMA public to henning;
+
