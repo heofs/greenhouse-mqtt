@@ -1,23 +1,23 @@
 import time
 import psycopg2
+import os
 
 
 class Database():
     """Database connection for PostgreSQL."""
 
-    def __init__(self,
-                 user="henning",
-                 password="password",
-                 host="127.0.0.1",
-                 database="testdb"):
+    def __init__(self):
+
         self.postgres_insert_query = """INSERT INTO sensor_data(device_id,
          temperature, humidity) VALUES (%s,%s,%s) RETURNING *;"""
+
         try:
-            self.connection = psycopg2.connect(user=user,
-                                               password=password,
-                                               host=host,
+            self.connection = psycopg2.connect(user="henning",
+                                               password="password",
+                                               host=os.getenv(
+                                                   'PG_HOST', 'localhost'),
                                                port=5432,
-                                               database=database)
+                                               database="testdb")
             print("Initialized database...")
         except (Exception, psycopg2.Error) as error:
             print("Failed to establish connection", error)
