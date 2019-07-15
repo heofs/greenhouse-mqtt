@@ -57,3 +57,14 @@ To run script on startup.
 * `sudo systemctl start publisher.service`
 
 * `sudo systemctl enable publisher.service`
+
+## Docker commands
+
+`docker run --rm -d --name some-timescaledb -p 5432:5432 -e POSTGRES_PASSWORD=password timescale/timescaledb:latest-pg11`
+
+`docker run -it --net=host --rm timescale/timescaledb psql -h localhost -U postgres`
+
+`docker-compose build --force-rm && docker-compose up --force-recreate --renew-anon-volumes`
+
+To rebuild sql scripts
+`docker-compose build && docker-compose up --renew-anon-volumes`
