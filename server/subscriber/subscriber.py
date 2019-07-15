@@ -27,7 +27,7 @@ Console. Create a pubsub topic, for example
 projects/my-project-id/topics/my-topic-name, and a subscription, for example
 projects/my-project-id/subscriptions/my-topic-subscription.
 
-set GOOGLE_APPLICATION_CREDENTIALS=C:\Dev\Python\end-to-end-mqtt\gcp-credentials.json
+set GOOGLE_APPLICATION_CREDENTIALS=.\gcp-credentials.json
 
 You can then run the example with
 
@@ -48,39 +48,40 @@ from googleapiclient import discovery
 from googleapiclient.errors import HttpError
 from oauth2client.service_account import ServiceAccountCredentials
 
-with open('configuration.json') as json_file:
-    config = json.load(json_file)
-
-API_SCOPES = config['API_SCOPES']
-API_VERSION = config['API_VERSION']
-DISCOVERY_API = config['DISCOVERY_API']
-SERVICE_NAME = config['SERVICE_NAME']
-pubsub_subscription = config['pubsub_subscription']
-project_id = config['project_id']
-service_account_json = config['service_account_json']
-
-subscription_path = ('projects/{}/subscriptions/{}'.format(
-    project_id,
-    pubsub_subscription,))
-
 
 class Server(object):
     """Represents the state of the server."""
 
-    def __init__(self):
-        credentials = ServiceAccountCredentials.from_json_keyfile_name(
-            service_account_json, API_SCOPES)
-        if not credentials:
-            sys.exit('Could not load service account credential '
-                     'from {}'.format(service_account_json))
+    def __init__(self, callback):
+        self.callback_func = callback
+        with open('configuration.json') as json_file:
+            config = json.load(json_file)
+        self.api_scopes = config['API_SCOPES']
+        self.api_version = config['API_VERSION']
+        self.discovery_api = config['DISCOVERY_API']
+        self.service_name = config['SERVICE_NAME']
+        self.pubsub_subscription = config['pubsub_subscription']
+        self.project_id = config['project_id']
+        self.service_account_json = config['service_account_json']
 
-        discovery_url = '{}?version={}'.format(DISCOVERY_API, API_VERSION)
+        self.subscription_path = ('projects/{}/subscriptions/{}'.format(
+            self.project_id,
+            self.pubsub_subscription,))
+        self.credentials = ServiceAccountCredentials.from_json_keyfile_name(
+            self.service_account_json, self.api_scopes)
+
+        if not self.credentials:
+            sys.exit('Could not load service account credential '
+                     'from {}'.format(self.service_account_json))
+
+        discovery_url = '{}?version={}'.format(
+            self.discovery_api, self.api_version)
 
         self._service = discovery.build(
-            SERVICE_NAME,
-            API_VERSION,
+            self.service_name,
+            self.api_version,
             discoveryServiceUrl=discovery_url,
-            credentials=credentials,
+            credentials=self.credentials,
             cache_discovery=False)
 
         # Used to serialize the calls to the
@@ -147,7 +148,7 @@ class Server(object):
         finally:
             self._update_config_mutex.release()
 
-    def run(self, project_id, pubsub_subscription):
+    def run(self):
         """The main loop. Consumes messages from the
         Pub/Sub subscription.
         """
@@ -176,21 +177,22 @@ class Server(object):
             device_registry_id = message.attributes['deviceRegistryId']
             device_id = message.attributes['deviceId']
             device_region = message.attributes['deviceRegistryLocation']
-
+            self.callback_func(data)
+            # print(data)
             # Send the config to the device.
-            self._update_device_config(
-                device_project_id,
-                device_region,
-                device_registry_id,
-                device_id,
-                data)
+            # self._update_device_config(
+            #     device_project_id,
+            #     device_region,
+            #     device_registry_id,
+            #     device_id,
+            #     data)
 
             # Acknowledge the consumed message. This will ensure that they
             # are not redelivered to this subscription.
             message.ack()
 
-        print('Listening for messages on {}'.format(subscription_path))
-        subscriber.subscribe(subscription_path, callback)
+        print('Listening for messages on {}'.format(self.subscription_path))
+        subscriber.subscribe(self.subscription_path, callback)
 
         # The subscriber is non-blocking, so keep the main thread from
         # exiting to allow it to process messages in the background.
@@ -200,7 +202,7 @@ class Server(object):
 
 def main():
     server = Server()
-    server.run(project_id, pubsub_subscription)
+    server.run()
 
 
 if __name__ == '__main__':
