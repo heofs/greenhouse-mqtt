@@ -1,15 +1,3 @@
-# Copyright 2017 Google Inc. All rights reserved.
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#    http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 r"""Sample server that pushes configuration to Google Cloud IoT devices.
 
 This example represents a server that consumes telemetry data from multiple
@@ -154,9 +142,6 @@ class Server(object):
         """
 
         subscriber = pubsub.SubscriberClient()
-        # subscription_path = subscriber.subscription_path(
-        #     project_id,
-        #     pubsub_subscription)
 
         def callback(message):
             """Logic executed when a message is received from
@@ -174,9 +159,9 @@ class Server(object):
             # automatically supplied by IoT, and allow the server to determine
             # which device sent the event.
             device_project_id = message.attributes['projectId']
+            device_region = message.attributes['deviceRegistryLocation']
             device_registry_id = message.attributes['deviceRegistryId']
             device_id = message.attributes['deviceId']
-            device_region = message.attributes['deviceRegistryLocation']
             self.callback_func(data)
             # print(data)
             # Send the config to the device.
