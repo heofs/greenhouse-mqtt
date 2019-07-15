@@ -1,17 +1,18 @@
-FROM python:3.7.2
-# WORKDIR /app
-RUN pip3 install pipenv
-RUN set -ex && mkdir /app
-
-COPY main.py /app/main.py
+FROM python:3.7.3
 WORKDIR /app
-ONBUILD COPY Pipfile Pipfile
-ONBUILD COPY Pipfile.lock Pipfile.lock
-ONBUILD RUN set -ex && pipenv install --deploy --system
+
+# COPY requirements.txt ./
+# RUN pip install --no-cache-dir -r requirements.txt
+
+RUN pip install pipenv
+COPY Pipfile Pipfile.lock /app/
+RUN pipenv install --system
+
+# Set environment varibles
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+ENV GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-credentials.json
+
+COPY . .
 
 CMD ["python", "main.py"]
-
-# COPY Pipfile Pipfile
-# COPY Pipfile.lock Pipefile.lock
-# RUN pipenv install
-# COPY . .
