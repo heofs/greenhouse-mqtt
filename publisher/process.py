@@ -4,6 +4,7 @@ import json
 import paho.mqtt.client as mqtt
 import ssl
 
+from pi.device import get_device_id
 from publisher import Device, create_jwt
 from dotenv import load_dotenv
 
@@ -34,22 +35,8 @@ class SHT3X():
 sensor = SHT3X()
 
 
-def get_device_id():
-    # Extract serial from cpuinfo file
-    cpuserial = "0000000000000000"
-    try:
-        f = open('/proc/cpuinfo', 'r')
-        for line in f:
-            if line[0:6] == 'Serial':
-                cpuserial = line[10:26]
-        f.close()
-        return cpuserial
-    except:
-        raise Exception('Exception: Could not find serial number')
-
-
 # try:
-#     device_id = get_device_id()
+#     device_id = 'pi' + get_device_id()
 #     print("Found serial: " + device_id)
 # except Exception as e:
 #     raise SystemExit(e)
