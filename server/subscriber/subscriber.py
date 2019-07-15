@@ -15,7 +15,10 @@ Console. Create a pubsub topic, for example
 projects/my-project-id/topics/my-topic-name, and a subscription, for example
 projects/my-project-id/subscriptions/my-topic-subscription.
 
+Windows
 set GOOGLE_APPLICATION_CREDENTIALS=.\gcp-credentials.json
+Linux
+export GOOGLE_APPLICATION_CREDENTIALS=.\gcp-credentials.json
 
 You can then run the example with
 
@@ -185,8 +188,12 @@ class Server(object):
             time.sleep(60)
 
 
+def printer(data):
+    print(data)
+
+
 def main():
-    server = Server()
+    server = Server(printer)
     server.run()
 
 
