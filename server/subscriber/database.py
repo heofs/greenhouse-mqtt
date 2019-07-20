@@ -7,20 +7,20 @@ class Database():
     """Database connection for PostgreSQL."""
 
     def __init__(self):
-
         self.postgres_insert_query = """INSERT INTO sensor_data(device_id,
          temperature, humidity) VALUES (%s,%s,%s) RETURNING *;"""
-
+        db_host = os.getenv('PG_HOST', 'localhost')
+        print("Using host: ", db_host)
         try:
-            self.connection = psycopg2.connect(user="henning",
-                                               password="password",
-                                               host=os.getenv(
-                                                   'PG_HOST', 'localhost'),
+            self.connection = psycopg2.connect(user="appuser",
+                                               password="87afjn133q4bmaxzcq99",
+                                               host=db_host,
                                                port=5432,
                                                database="testdb")
-            print("Initialized database...")
+            print("Successfully connected to database...")
         except (Exception, psycopg2.Error) as error:
             print("Failed to establish connection", error)
+            raise SystemExit(1)
 
     def insert_data(self, data):
         """Insert data into database."""
@@ -37,10 +37,11 @@ class Database():
 
             print("You inserted: ", record)
             return record
-        except (Exception, psycopg2.Error) as error:
-            print("Failed to insert record into table. Error: ", error)
         except AttributeError as error:
             print("Attribute missing, Error: ", error)
+        except (Exception, psycopg2.Error) as error:
+            print("Failed to insert record into table. Error: ", error)
+            raise SystemExit(1)
 
     def close_connection(self):
         """Safely close connection."""
