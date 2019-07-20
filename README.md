@@ -68,3 +68,9 @@ To run script on startup.
 
 To rebuild sql scripts
 `docker-compose build && docker-compose up --renew-anon-volumes`
+
+Delete containers with volumes
+`docker-compose rm -v`
+
+Start containers in detached mode
+`docker-compose up -d`
