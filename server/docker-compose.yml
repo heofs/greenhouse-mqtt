@@ -3,29 +3,33 @@ version: "3.7"
 services:
   timescaledb:
     build: "./timescale"
+    image: timescale_db:v1
     ports:
       - "5432:5432"
+    restart: on-failure
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    # environment:
-    #   - POSTGRES_USER=my_user
-    #   - POSTGRES_PASSWORD=my_password
+    environment:
+      - POSTGRES_USER=pguser
+      - POSTGRES_PASSWORD=3h5g345hj25j1
   grafana:
     build: "./grafana"
+    image: grafana_server:v1
     ports:
       - "3000:3000"
+    restart: on-failure
+    depends_on:
+      - timescaledb
     volumes:
       - grafana_storage:/var/lib/grafana
-    depends_on:
-      - timescaledb
   subscriber:
     build: "./subscriber"
-    # image: python_subscriber:v1
+    image: python_subscriber:v1
     environment:
       - PG_HOST=timescaledb
+    restart: on-failure
     depends_on:
       - timescaledb
-      - grafana
 
 volumes:
   postgres_data:
