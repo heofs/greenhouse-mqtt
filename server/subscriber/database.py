@@ -8,7 +8,7 @@ class Database():
 
     def __init__(self):
         self.postgres_insert_query = """INSERT INTO sensor_data(device_id,
-         temperature, humidity) VALUES (%s,%s,%s) RETURNING *;"""
+         location, temperature, humidity) VALUES (%s,%s,%s,%s) RETURNING *;"""
         db_host = os.getenv('PG_HOST', 'localhost')
         print("Using host: ", db_host)
         try:
@@ -26,9 +26,11 @@ class Database():
         """Insert data into database."""
         try:
             device_id = data['device_id']
+            location = data.get('location', None)
             temperature = data.get('temperature', None)
             humidity = data.get('humidity', None)
-            record_to_insert = (device_id, temperature, humidity)
+            record_to_insert = (device_id,
+                                location, temperature, humidity)
 
             self.cursor = self.connection.cursor()
             self.cursor.execute(self.postgres_insert_query, record_to_insert)
