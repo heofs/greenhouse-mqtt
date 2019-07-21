@@ -42,7 +42,7 @@ while True:
             'humidity': data['humidity']
         }
         publisher.publish_message(payload)
-        time.sleep(5)
+        time.sleep(20)
 
     except KeyboardInterrupt:
         print("Shutting down..")
