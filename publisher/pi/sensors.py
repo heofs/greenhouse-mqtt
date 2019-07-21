@@ -26,8 +26,8 @@ class SHT3X(object):
         self.cTemp = -45 + (175 * self.temp / 65535.0)
         self.humidity = 100 * (self.data[3] * 256 + self.data[4]) / 65535.0
 
-        print("Temperature in Celsius is : %.2f C" % self.cTemp)
-        print("Relative Humidity is : %.2f %%RH" % self.humidity)
+        # print("Temperature: %.2f C" % self.cTemp)
+        # print("Relative Humidity: %.2f %%RH" % self.humidity)
         return {"temperature": self.cTemp, "humidity": self.humidity}
 
 
