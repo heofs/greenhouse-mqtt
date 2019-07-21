@@ -5,12 +5,13 @@ GRANT ALL PRIVILEGES ON DATABASE testdb TO appuser;
 \c testdb
 
 CREATE TABLE public.sensor_data(
-    time TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     device_id TEXT NOT NULL,
+    location TEXT,
     temperature FLOAT(1),
     humidity FLOAT(1)
 );
-SELECT create_hypertable('public.sensor_data', 'time');
+SELECT create_hypertable('public.sensor_data', 'created');
 -- GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.sensor_data TO appuser;
 
 -- GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO appuser;
