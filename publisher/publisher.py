@@ -34,8 +34,7 @@ class Publisher(object):
                 registry_id,
                 device_id))
         self.client.username_pw_set(
-            username='unused',
-            password=self.create_jwt())
+            username='unused', password=self.create_jwt())
         self.client.tls_set(ca_certs=ca_certs,
                             tls_version=ssl.PROTOCOL_TLSv1_2)
 
@@ -83,6 +82,10 @@ class Publisher(object):
 
     def on_disconnect(self, unused_client, unused_userdata, rc):
         """Callback for when a device disconnects."""
+        error_code = int(rc)
+        if(error_code == 5 or error_code == 5):
+            self.client.username_pw_set(
+                username='unused', password=self.create_jwt())
         print('Disconnected:', self.error_str(rc))
         self.connected = False
 
