@@ -3,8 +3,8 @@ Description=IoT Publisher Service
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/python3.7 -u main.py
-WorkingDirectory=/home/pi/process
+ExecStart=/usr/bin/python3 -u process.py
+WorkingDirectory=/home/pi/projects/greenhouse-mqtt/publisher
 StandardOutput=inherit
 StandardError=inherit
 Restart=always
