@@ -4,7 +4,10 @@
 
 ### Required files
 
+#### Publisher
+
 `publisher/credentials.json`
+
 ```json
 {
   "registry_id": "",
@@ -24,18 +27,35 @@
 
 `publisher/roots.pem`
 
-`publisher/rsa_private.pem`
+Get `roots.pem` by running:
 
-Get `roots.pem` by running: 
 ```bash
 wget https://pki.goog/roots.pem
 ```
- or 
+
+or
+
 ```bash
 curl https://pki.goog/roots.pem > roots.pem
 ```
 
+`publisher/rsa_private.pem`
+
+Create key pair with OpenSSL
+
+Generate private key
+`openssl genrsa -des3 -out private_key.pem 2048`
+
+Unencrypt private key
+`openssl rsa -in private_key.pem -out rsa_private.pem`
+
+export public key from private
+`openssl rsa -in rsa_private.pem -outform PEM -pubout -out public.pem`
+
+#### Subscriber
+
 `subscriber/credentials.json`
+
 ```json
 {
   "API_SCOPES": ["https://www.googleapis.com/auth/cloud-platform"],
@@ -48,15 +68,17 @@ curl https://pki.goog/roots.pem > roots.pem
 }
 ```
 
+For `gcp-credentials.json` create a service account.
 
 ## Raspberry Pi
 
 To run script on startup.
-* `sudo cp publisher/pi/publisher.service /etc/systemd/system/publisher.service`
 
-* `sudo systemctl start publisher.service`
+- `sudo cp publisher/pi/publisher.service /etc/systemd/system/publisher.service`
 
-* `sudo systemctl enable publisher.service`
+- `sudo systemctl start publisher.service`
+
+- `sudo systemctl enable publisher.service`
 
 ## Docker commands
 
